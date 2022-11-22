@@ -4,6 +4,7 @@ from .interfaz import Consola
 from .mmu import MMU
 from .PLP import LargoPlazo
 from .PCP import CortoPlazo
+from .PMP import MedioPlazo
 
 
 
@@ -14,8 +15,12 @@ class Simulador(object):
         self.__mmu = MMU(particiones)  # El MMU se encarga de inicializar la memoria
         self.__plp = LargoPlazo(lista_procesos)
         self.__pcp = CortoPlazo()
+        self.__pmp = MedioPlazo(self.__mmu)
         self.__terminados = list()
     
+    def reloj(self):
+        return self.__reloj
+
     def mmu(self):
         return self.__mmu
 
@@ -25,13 +30,15 @@ class Simulador(object):
     def pcp(self):
         return self.__pcp
 
+    def pmp(self):
+        return self.__pmp  
 
     def liberarRecursos(self):
         proceso = self.__pcp.cpu().procAsignado()
         proceso.setestado('T')
         self.__pcp.liberar()
         self.__mmu.liberar(proceso)
-        self.__plp.terminar(proceso)
+        self.__plp.terminarProceso(proceso)
         self.__terminados.append(proceso)
 
     def nuevos(self, cant=None):
@@ -61,11 +68,12 @@ class Simulador(object):
         for proceso in lista_procesos:    
             print(f'{proceso.id()}\t{proceso.ta()}\t{proceso.ti()}\t{proceso.tam()}\t{proceso.estado()}')       
 
+
     def admitir(self):
         # Engloba la admisión de procesos pendientes en el PLP
         # y actualiza cola de listos en el PCP
-        self.__plp.admitir(self.__mmu, self.__reloj)
-        self.__pcp.setProcListos(self.__plp.getListos())
+        self.plp().admitir(self.mmu(), self.reloj())
+        self.pcp().setProcListos(self.plp().getListos())
 
     def iniciarConsola(self):
         titulo = 'SIMULADOR'
@@ -89,6 +97,8 @@ class Simulador(object):
             if self.__pcp.cpu().reloj() == 0:
                 self.liberarRecursos()
                 self.admitir()
+                self.plp().setAdmitidos(self.pmp().ejecutar(self.admitidos()))
+                self.pcp().setProcListos(self.plp().getListos())
                 self.__pcp.dispatcher()
             self.__pcp.ejectuar()
 

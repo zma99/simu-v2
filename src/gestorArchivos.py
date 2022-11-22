@@ -63,7 +63,10 @@ def valido(lista):
             errores += 1
 
     if errores > 0:
-        print(f'\nERROR: Hay {errores} procesos en el archivo que tienen un tamaño que excede la capacidad del simulador.\n')
+        error = f'\nERROR: Hay {errores} procesos en el archivo que tienen un tamaño que excede la capacidad del simulador.'
+        print('\n'+'#'*len(error))
+        print(error)
+        print('\n'+'#'*len(error))
         os.system('pause')
         return False
 

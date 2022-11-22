@@ -5,13 +5,8 @@ class LargoPlazo(object):
         self.__multiprog = 5
         self.__nuevosProc = list()
         self.__admitidos = list()
-        for dato in lista_procesos:
-            p = Proceso()
-            p.setid(len(self.__nuevosProc) + 1)
-            p.setta(dato[0])
-            p.setti(dato[1])
-            p.settam(dato[2])
-            self.__nuevosProc.append(p)
+        for datos in lista_procesos:
+            self.__nuevosProc.append(self.crearProceso(datos))
         self.__nuevosProc.sort(key=lambda x : x.ta())
         
     def nuevos(self):
@@ -19,12 +14,23 @@ class LargoPlazo(object):
 
     def admitidos(self):
         return self.__admitidos
+    
+    def setAdmitidos(self, lista_procesos):
+        self.__admitidos = lista_procesos
 
     def cantAdmitidos(self):
         return len(self.__admitidos)
 
     def ingresando(self):
         return len(self.__nuevosProc) > 0
+
+    def crearProceso(self, datos):
+        p = Proceso()
+        p.setid(len(self.__nuevosProc) + 1)
+        p.setta(datos[0])
+        p.setti(datos[1])
+        p.settam(datos[2])
+        return p
 
     def tiTotal(self):
         # Calcula y retorna el TI total
@@ -59,7 +65,7 @@ class LargoPlazo(object):
         return listos
 
 
-    def terminar(self, proceso):
+    def terminarProceso(self, proceso):
         # Remueve procesos con estado=T
         # de la cola de admitidos
         if self.cantAdmitidos() > 0:

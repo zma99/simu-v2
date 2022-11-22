@@ -32,7 +32,10 @@ class MMU(object):
             print(f'{part.id()}\t{part.dirInicio()}\t{part.tam()}\t{procAsignado}\t{part.fragmentacion()}')
         print('-'*len(titulo)+'-'*10)
 
+    def ubicar(self, proceso):
+        self.memoria().partLibreMayor().asignar(proceso)
 
+        
     def asignar(self, lista_procesos):
         # Controla la asignación de procesos a memoria
         for proceso in lista_procesos:

@@ -20,7 +20,7 @@ class Consola(object):
         if platform == 'win32':
             system('cls')
         elif platform == 'linux':
-            system('clear')
+            system('tput reset')
         else:
             pass
 

@@ -11,7 +11,10 @@ class Consola(object):
             pass
 
     def setTitulo(self, titulo):
-        system(f'TITLE {titulo}')
+        if platform == 'win32':
+            system(f'TITLE {titulo}')
+        else:
+            pass
 
     def limpiar(self):
         if platform == 'win32':

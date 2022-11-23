@@ -1,5 +1,5 @@
 from .terminal import Consola
-from .gestorArchivos import formatear
+from .gestorArchivos import formatInt
 
 
 def imprimir(cadena, ancho):
@@ -71,7 +71,7 @@ def mostrar(titulo, lista_procesos):
             num += 1    
             print(f'{num}\t{proceso[0]}\t{proceso[1]}\t{proceso[2]}')
 
-def validar(dato):
+def esEntero(dato):
     try:
         int(dato)
         return True
@@ -83,12 +83,16 @@ def pedir(nom_dato):
     x = Consola()
     while True:
         dato = input(f'{nom_dato}= ')
-        if validar(dato):
+        if esEntero(dato):
             break
         x.esperar('')
         
-
     return dato
+
+
+def formatear(lista):
+    return formatInt(lista)
+
 
 def cargaManual():
     x = Consola('Carga manual')
@@ -98,7 +102,7 @@ def cargaManual():
         x.limpiar()
         num += 1
         print('\nIngrese datos del proceso.\n')
-        print('Procesos cargados: ', lista_procesos)
+        print('Procesos cargados [TA,TI,TAM]: ', lista_procesos)
         print('-'*40)
         print(f'\nProceso Nro:{num}')
         ta = pedir('TA')

@@ -20,18 +20,17 @@ class MMU(object):
     def distribucion(self):
         # Muestra en pantalla la distribución de particiones
         # en memoria y sus propiedades
-        titulo = 'Distribución de particiones'
+        titulo = ' Distribución de particiones'
         print(titulo)
-        print('-'*len(titulo)+'-'*10)
-        print('ID\tDir\tTam\tPID\tFrag')
+        print(' ' + '-'*len(titulo)+'-'*14)
+        print(' ID\tDir\tTam\tPID\tFrag')
         for part in self.particiones():
             if part.procAsignado() is None:
-                procAsignado = None
+                procAsignado = '-'
             else:
                 procAsignado = part.procAsignado().id()
 
-            print(f'{part.id()}\t{part.dirInicio()}\t{part.tam()}\t{procAsignado}\t{part.fragmentacion()}')
-        print('-'*len(titulo)+'-'*10)
+            print(f' {part.id()}\t{part.dirInicio()}\t{part.tam()}\t{procAsignado}\t{part.fragmentacion()}')
 
     def ubicar(self, proceso):
         self.memoria().partLibreMayor().asignar(proceso)

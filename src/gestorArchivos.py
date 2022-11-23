@@ -72,20 +72,32 @@ def valido(lista):
 
     return True
 
-def cargar(ruta_archivo):
+def cargar(ruta_archivo, modo=0):
     if exists(ruta_archivo):
         print('\nLeyendo archivo...')
         with open(ruta_archivo, 'r') as archivo:
-            contenido = archivo.read().split('\n')
-            print('\nContenido del archivo:\n')
-            print(contenido)
-            contenido = formatear(contenido)
-            print('\nContenido validado:\n')
-            print(contenido)
-            if contenido != 0 and valido(contenido):
-                sleep(0.5)
-                print('\nListo!')
-                input('\nPresione una tecla para continuar...')
-                return contenido
+            if modo == 0:
+                with open(ruta_archivo, 'r') as archivo:
+                    contenido = archivo.read().split('\n')
+                    print('\nContenido del archivo:\n')
+                    print(contenido)
+                    contenido = formatear(contenido)
+                    print('\nContenido validado:\n')
+                    print(contenido)
+                    if contenido != 0 and valido(contenido):
+                        sleep(0.5)
+                        print('\nListo!')
+                        input('\nPresione una tecla para continuar...')
+                        return contenido
+            elif modo == 1:
+                os.system('cls')
+                contenido = archivo.readline()
+                while contenido != '':
+                    print(contenido)
+                    if contenido.count('-') > 2:
+                        os.system('pause>nul')
+                    contenido = archivo.readline()
+            else:
+                pass
     else:
         print('NO SE ENCUENTRA EL ARHCIVO ESPECIFICADO')

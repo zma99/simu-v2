@@ -65,12 +65,12 @@ class Simulador(object):
         # Muestra una tabla con título personalizado
         # encabezados PID, TA, TI, TAM, EST
         # en mismo orden los atributos de cada proceso
-        print('-'*37)
+        print(' ' + '-'*42)
         print(f'\n{titulo}')
-        print('-'*37)
-        print(f'PID\tTA\tTI\tTAM\tEST\tPART')
+        print(' ' + '-'*42)
+        print(f' PID\tTA\tTI\tTAM\tEST')
         for proceso in lista_procesos:    
-            print(f'{proceso.id()}\t{proceso.ta()}\t{proceso.ti()}\t{proceso.tam()}\t{proceso.estado()}\t{proceso.partId()}')       
+            print(f' {proceso.id()}\t{proceso.ta()}\t{proceso.ti()}\t{proceso.tam()}\t{proceso.estado()}')       
 
 
     def admitir(self):
@@ -84,19 +84,23 @@ class Simulador(object):
     def iniciarConsola(self):
         titulo = 'SIMULADOR'
         self.__consola = Consola(titulo)
-        #self.__consola.formatTerm(40,50)
+        self.__consola.formatTerm(44,40)
 
+    def nofin(self):
+        return self.nuevos() or self.admitidos()
+        
     def iniciar(self):
         # Inicia el simulador
         self.iniciarConsola()
         self.mainloop()
+        print('\n\nFIN DE LA SIMULACIÓN\n')
 
     def mainloop(self):
         # Ejecuta el bucle del programa principal
         bandera = True
         x = self.consola()
-        fin = self.__plp.tiTotal()+1  #  Bandera de fin de ejecución
-        while self.__reloj != fin:
+        #fin = self.__plp.tiTotal()+1  #  Bandera de fin de ejecución
+        while self.nofin():
             x.limpiar()
             
             self.admitir()
@@ -120,22 +124,22 @@ class Simulador(object):
                 
             self.pcp().ejectuar()
 
-            print('-'*37)
-            print(f'Reloj = {self.reloj()}\t', end='')
+            print(' ' + '-'*42)
+            print(f' Reloj = {self.reloj()}\t', end='')
             if not self.pcp().cpu().procAsignado() is None:
-                print(f'Ejecutando: PID={self.pcp().cpu().procAsignado().id()}')
+                print(f'\tEjecutando: PID={self.pcp().cpu().procAsignado().id()}')
             else:
-                print(f'Ejecutando: PID={self.pcp().cpu().procAsignado()}')
-            print('-'*37 + '\n')
+                print(f'\tEjecutando: PID=[]')
+            print(' ' + '-'*42 + '\n')
 
             # Muestra la distribución de particiones
             # procesos asignados y fragmentación
             self.mmu().distribucion()
 
             # Se muestra en pantalla los estados
-            self.mostrar('Monitor de procesos', self.admitidos())
-            self.mostrar('Procesos pendientes', self.nuevos(10))
-            self.mostrar('Procesos terminados', self.terminados())
+            self.mostrar(' Monitor de procesos', self.admitidos())
+            self.mostrar(' Procesos pendientes (3 primeros en cola)', self.nuevos(10))
+            self.mostrar(' Procesos terminados', self.terminados())
             
             
             self.incrementar()   # Incrementa el reloj

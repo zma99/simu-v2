@@ -25,7 +25,7 @@ class Consola(object):
         else:
             pass
 
-    def esperar(self, mensaje='\nPresione una tecla para continuar...'):
+    def esperar(self, mensaje='\n Presione una tecla para continuar...'):
         input(mensaje)
 
     def formatTerm(self, columnas=False, lineas=False):
@@ -36,7 +36,6 @@ class Consola(object):
                 system(f'MODE con:cols={columnas} lines={lineas}')
             elif columnas:
                 system(f'MODE con:cols={columnas}')
-                self.esperar()
             elif lineas:
                 system(f'MODE con:lines={lineas}')
 

@@ -10,11 +10,13 @@ OPCIONES_MENU ={
     '1':'Iniciar simulación',
     '2':'Cargar procesos desde archivo',
     '3':'Cargar procesos manualmente',
-    '4':'Acerca del simulador',
-    '5':'Salir'
+    '4':'Información',
+    '5':'Acerca del simulador',
+    '6':'Salir'
 }
 
-RUTA_ARCHIVO = 'config\datos.txt'
+ARCH_PROC = 'config\datos.txt'
+ARCH_INSTUC = 'README.txt'
 PARTICIONES = [100,250,120,60]
 TITULO='SIMULADOR DE ASIGNACION DE MEMORIA Y PLANIFICACION DE PROCESOS'
 
@@ -28,6 +30,7 @@ if __name__ == '__main__':
     while True:
         x.limpiar()
         x.setTitulo('Menu')
+        x.formatTerm(len(TITULO)+2, 20)
         print('-'*len(TITULO))
         print(TITULO)
         print('-'*len(TITULO))
@@ -35,28 +38,36 @@ if __name__ == '__main__':
             menu.mostrar()
             menu.capturar()
             break
+        
+        x.limpiar()
         if menu.eleccion() == 1:
             if cola_nuevos:
                 simu = Simulador(PARTICIONES, cola_nuevos)
                 simu.iniciar()
-                print('\n\nFIN DE LA SIMULACIÓN\n')
             else:
                 print('\nPrimero debe cargar información de los procesos. Puede hacerlo desde un archivo o cargar manualmente.')
             
-            x.esperar('\nPresione una tecla para volver al menú principal...')
+            x.esperar('\nPresione una tecla para volver al menú...')
 
         if menu.eleccion() == 2:
-            cola_nuevos = cargar(RUTA_ARCHIVO)
-
+            x.formatTerm(140,30)
+            cola_nuevos = cargar(ARCH_PROC)
+        
         if menu.eleccion() == 3:
+            x.formatTerm(140,30)
             cola_nuevos = cargaManual()
-
+            
         if menu.eleccion() == 4:
-            x.limpiar()
+            x.formatTerm(100,40)
+            cargar(ARCH_INSTUC, 1)
+            x.esperar()
+
+        if menu.eleccion() == 5:
+            x.formatTerm(80,30)
             info()
             x.esperar('\nPresione una tecla para volver al menú principal...')
 
-        if menu.eleccion() == 5:
+        if menu.eleccion() == 6:
             break
 
     sys.exit('\nSaliendo...')

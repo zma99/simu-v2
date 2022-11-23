@@ -33,7 +33,7 @@ class MedioPlazo(object):
         ls = self.extraer(aux, 'L/S')
         for p in ls:
             for q in lista_procesos:
-                if self.mmu().cabe(p,q) and p.ti() < q.ti():
+                if q.estado() != 'E' and self.mmu().cabe(p,q) and p.ti() < q.ti():
                     self.swap(p, q)
                     lista_procesos[lista_procesos.index(p)].setestado(p.estado())
                     break
@@ -42,7 +42,7 @@ class MedioPlazo(object):
         ls = self.extraer(aux, 'L/S')
         for p in ls:
             for q in lista_procesos:
-                if len(self.extraer(aux, 'L')) < 3 and self.mmu().cabe(p,q):
+                if len(self.extraer(aux, 'L')) < 3 and q.estado() != 'E' and self.mmu().cabe(p,q):
                     self.swap(p, q)
                     lista_procesos[lista_procesos.index(p)].setestado(p.estado())
                     break  

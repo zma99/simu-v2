@@ -29,6 +29,7 @@ class Consola(object):
         input(mensaje)
 
     def formatTerm(self, columnas=False, lineas=False):
+        # Cambia el tamaño de la ventana de la terminal en uso
         if platform == 'win32':
             if not (columnas or lineas):
                 system('MODE con:cols=100 lines=25')

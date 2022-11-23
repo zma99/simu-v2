@@ -8,22 +8,21 @@ x = Consola()
 
 
 def salir():
+    # Simula que se está liberando la consola
     x.setTitulo('')
     print('\nSaliendo...')
-    sleep(0.2)
-    print('.')
-    sleep(0.2)
-    print('.')
-    sleep(0.2)
-    print('.')
-    sleep(0.2)
+    for i in range(0,3):
+        sleep(0.3)
+        print('.')
     x.formatTerm()
     sys.exit()
 
 def imprimir(cadena, ancho):
+    # Imprime una con texto centrado
     print('|' + cadena.center(ancho,' '), end='|\n')
 
 def panel(lineas, ancho):
+    # Imprime un cuadro con informacion centrada
     for cadena in lineas:
         if type(cadena) == list:
             for x in cadena:
@@ -108,10 +107,14 @@ def pedir(nom_dato):
 
 
 def formatear(lista):
+    # Toma una lista de listas con formato [TA,TI,TAM]
+    # cada valor se convierte de str a int
     return formatInt(lista)
 
 
 def cargaManual():
+    # Permite la carga de datos manualmente 
+    # incluye validacion de datos tipo int()
     x.setTitulo('Carga manual')
     num = 0
     lista_procesos = list()

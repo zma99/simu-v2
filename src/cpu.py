@@ -10,9 +10,10 @@ class CPU(object):
         return self.__reloj
 
     def asignar(self, proceso):
-        self.__procAsignado = proceso
-        self.__procAsignado.setestado('E')
-        self.__reloj = proceso.ti()
+        if self.procAsignado() is None:
+            self.__procAsignado = proceso
+            self.__procAsignado.setestado('E')
+            self.__reloj = proceso.ti()
 
     def ejecutar(self):
         if not self.reloj() is None:

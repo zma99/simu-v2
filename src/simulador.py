@@ -32,6 +32,9 @@ class Simulador(object):
 
     def pmp(self):
         return self.__pmp  
+    
+    def incrementar(self):
+        self.__reloj += 1
 
     def liberarRecursos(self):
         proceso = self.__pcp.cpu().procAsignado()
@@ -74,7 +77,9 @@ class Simulador(object):
         # Engloba la admisión de procesos pendientes en el PLP
         # y actualiza cola de listos en el PCP
         self.plp().admitir(self.mmu(), self.reloj())
+        self.pmp().ejecutar(self.admitidos())
         self.pcp().setProcListos(self.plp().getListos())
+        
 
     def iniciarConsola(self):
         titulo = 'SIMULADOR'
@@ -93,10 +98,12 @@ class Simulador(object):
         fin = self.__plp.tiTotal()+1  #  Bandera de fin de ejecución
         while self.__reloj != fin:
             x.limpiar()
+            
             self.admitir()
 
             if bandera and self.plp().getListos():
-                self.__pcp.dispatcher()
+                #self.pmp().ejecutar(self.admitidos())
+                self.pcp().dispatcher()
                 bandera = False
                 
             
@@ -105,29 +112,31 @@ class Simulador(object):
             if self.__pcp.cpu().reloj() == 0:
                 self.liberarRecursos()
                 self.admitir()
-                self.plp().setAdmitidos(self.pmp().ejecutar(self.admitidos()))
-                self.pcp().setProcListos(self.plp().getListos())
-                self.__pcp.dispatcher()
+                self.pcp().dispatcher()
 
+            if not self.plp().getListos():
+                bandera = True
+                #self.pmp().ejecutar(self.admitidos())
                 
-            self.__pcp.ejectuar()
+            self.pcp().ejectuar()
 
             print('-'*37)
-            print(f'Reloj = {self.__reloj}\t', end='')
-            if not self.__pcp.cpu().procAsignado() is None:
-                print(f'Ejecutando: PID={self.__pcp.cpu().procAsignado().id()}')
+            print(f'Reloj = {self.reloj()}\t', end='')
+            if not self.pcp().cpu().procAsignado() is None:
+                print(f'Ejecutando: PID={self.pcp().cpu().procAsignado().id()}')
             else:
-                print(f'Ejecutando: PID={self.__pcp.cpu().procAsignado()}')
+                print(f'Ejecutando: PID={self.pcp().cpu().procAsignado()}')
             print('-'*37 + '\n')
 
             # Muestra la distribución de particiones
             # procesos asignados y fragmentación
-            self.__mmu.distribucion()
+            self.mmu().distribucion()
 
             # Se muestra en pantalla los estados
             self.mostrar('Monitor de procesos', self.admitidos())
             self.mostrar('Procesos pendientes', self.nuevos(10))
             self.mostrar('Procesos terminados', self.terminados())
             
-            self.__reloj += 1   # Incrementa el reloj
+            
+            self.incrementar()   # Incrementa el reloj
             x.esperar()

@@ -50,8 +50,15 @@ class MMU(object):
         # Invoca método para liberar proceso de memoria
         self.__memoria.liberar(proceso)
 
-    def cabe(self, p, q):
-        if q.partId() is None:
+    def cabe(self, p, q=None):
+        if q is None:
+            particion = self.memoria().partLibreMayor()
+        elif q.partId() is None:
+            particion = self.memoria().partLibreMayor()
+        else:
+            particion = self.memoria().particionId(q.partId())
+        
+        if not particion is None:
+            return p.tam() <= particion.tam()
+        else:
             return False
-        particion = self.memoria().particionId(q.partId())
-        return p.tam() <= particion.tam()

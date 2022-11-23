@@ -13,14 +13,14 @@ class MedioPlazo(object):
         self.mmu().ubicar(p)
         p.setestado('L')
 
-    def extraerLS(self, proc):
+    def extraer(self, proc, est):
         # Toma una lista de procesos admitidos y
         # extrae aquellos con estado = L/S 
         # retornandolos como una lista nueva
         aux = proc[:]
         temp = list()
         for p in proc:
-            if p.estado() == 'L/S':
+            if p.estado() == est:
                 temp.append(aux.pop(aux.index(p)))
         return temp
 
@@ -30,13 +30,29 @@ class MedioPlazo(object):
         # con el proceso estado=L
         # sólo si cabe en la misma partición
         aux = lista_procesos[:]
-        ls = self.extraerLS(aux)
+        ls = self.extraer(aux, 'L/S')
         for p in ls:
             for q in lista_procesos:
-                if p.ti() < q.ti() and self.mmu().cabe(p,q):
+                if self.mmu().cabe(p,q) and p.ti() < q.ti():
                     self.swap(p, q)
                     lista_procesos[lista_procesos.index(p)].setestado(p.estado())
                     break
+
+        aux = lista_procesos[:]
+        ls = self.extraer(aux, 'L/S')
+        for p in ls:
+            for q in lista_procesos:
+                if len(self.extraer(aux, 'L')) < 3 and self.mmu().cabe(p,q):
+                    self.swap(p, q)
+                    lista_procesos[lista_procesos.index(p)].setestado(p.estado())
+                    break  
+    
+        aux = lista_procesos[:]
+        ls = self.extraer(aux, 'L/S')
+        for p in ls:
+            if self.mmu().cabe(p):
+                self.mmu().ubicar(p)
+                lista_procesos[lista_procesos.index(p)].setestado('L')
 
         return lista_procesos
 

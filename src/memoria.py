@@ -50,6 +50,7 @@ class Memoria(object):
                 partMayor = part
                 mayor = part.tam()
 
+        print('PARTICION LIBRE MAYOR: ',partMayor)
         return partMayor
 
     def worstfit(self, proceso):

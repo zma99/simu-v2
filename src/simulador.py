@@ -84,7 +84,7 @@ class Simulador(object):
     def iniciarConsola(self):
         titulo = 'SIMULADOR'
         self.__consola = Consola(titulo)
-        self.__consola.formatTerm(44,40)
+        self.__consola.formatTerm(44,45)
 
     def nofin(self):
         return self.nuevos() or self.admitidos()
@@ -99,30 +99,26 @@ class Simulador(object):
         # Ejecuta el bucle del programa principal
         bandera = True
         x = self.consola()
-        #fin = self.__plp.tiTotal()+1  #  Bandera de fin de ejecución
         while self.nofin():
             x.limpiar()
             
             self.admitir()
 
             if bandera and self.plp().getListos():
-                #self.pmp().ejecutar(self.admitidos())
                 self.pcp().dispatcher()
                 bandera = False
-                
-            
 
 
-            if self.__pcp.cpu().reloj() == 0:
+            if self.pcp().cpu().reloj() == 0:
                 self.liberarRecursos()
                 self.admitir()
                 self.pcp().dispatcher()
 
             if not self.plp().getListos():
                 bandera = True
-                #self.pmp().ejecutar(self.admitidos())
-                
-            self.pcp().ejectuar()
+            
+            # Ejecución
+            self.pcp().ejectuar()   
 
             print(' ' + '-'*42)
             print(f' Reloj = {self.reloj()}\t', end='')

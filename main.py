@@ -1,3 +1,4 @@
+from os import path
 from src.gestorArchivos import *
 from src.menu import Menu
 from src.interfaz import Consola, cargaManual, acercaDe, salir
@@ -15,8 +16,8 @@ OPCIONES_MENU ={
     '6':'Salir'
 }
 
-ARCH_PROC = 'config\datos.txt'
-ARCH_INSTUC = 'README.txt'
+ARCH_PROC = path.join('config', 'datos.txt')
+ARCH_INSTRUC = 'README.txt'
 PARTICIONES = [100,250,120,60]
 TITULO='SIMULADOR DE ASIGNACION DE MEMORIA Y PLANIFICACION DE PROCESOS'
 
@@ -62,7 +63,7 @@ if __name__ == '__main__':
         if menu.eleccion() == 4:
             x.formatTerm(100,40)
             x.setTitulo('Informacion')
-            cargar(ARCH_INSTUC, 1)
+            cargar(ARCH_INSTRUC, 1)
             x.esperar()
 
         if menu.eleccion() == 5:

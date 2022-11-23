@@ -76,6 +76,7 @@ def valido(lista):
     return True
 
 def cargar(ruta_archivo, modo=0):
+    x.limpiar()
     if exists(ruta_archivo):
         print('\nLeyendo archivo...')
         with open(ruta_archivo, 'r') as archivo:
@@ -104,3 +105,4 @@ def cargar(ruta_archivo, modo=0):
                 pass
     else:
         print('NO SE ENCUENTRA EL ARHCIVO ESPECIFICADO')
+        x.esperar()

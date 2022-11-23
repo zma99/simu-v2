@@ -14,6 +14,7 @@ def salir():
     for i in range(0,3):
         sleep(0.3)
         print('.')
+    x.limpiar()
     x.formatTerm()
     sys.exit()
 

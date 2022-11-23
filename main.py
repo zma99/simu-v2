@@ -1,8 +1,8 @@
-import os, sys
 from src.gestorArchivos import *
 from src.menu import Menu
-from src.interfaz import Consola, cargaManual, info
+from src.interfaz import Consola, cargaManual, acercaDe, salir
 from src.simulador import Simulador
+
 
 # CONFIGURACION
 
@@ -45,12 +45,14 @@ if __name__ == '__main__':
                 simu = Simulador(PARTICIONES, cola_nuevos)
                 simu.iniciar()
             else:
-                print('\nPrimero debe cargar información de los procesos. Puede hacerlo desde un archivo o cargar manualmente.')
+                x.formatTerm()
+                print('\nPrimero debe cargar información de los procesos.\nPuede hacerlo desde un archivo o cargar manualmente.')
             
             x.esperar('\nPresione una tecla para volver al menú...')
 
         if menu.eleccion() == 2:
             x.formatTerm(140,30)
+            x.setTitulo('Cargando archivo')
             cola_nuevos = cargar(ARCH_PROC)
         
         if menu.eleccion() == 3:
@@ -59,15 +61,17 @@ if __name__ == '__main__':
             
         if menu.eleccion() == 4:
             x.formatTerm(100,40)
+            x.setTitulo('Informacion')
             cargar(ARCH_INSTUC, 1)
             x.esperar()
 
         if menu.eleccion() == 5:
             x.formatTerm(80,30)
-            info()
+            x.setTitulo('Acerca del simulador')
+            acercaDe()
             x.esperar('\nPresione una tecla para volver al menú principal...')
 
         if menu.eleccion() == 6:
             break
 
-    sys.exit('\nSaliendo...')
+    salir()

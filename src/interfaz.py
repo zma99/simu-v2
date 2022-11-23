@@ -1,6 +1,24 @@
+import sys
+from time import sleep
 from .terminal import Consola
 from .gestorArchivos import formatInt
 
+x = Consola()
+
+
+
+def salir():
+    x.setTitulo('')
+    print('\nSaliendo...')
+    sleep(0.2)
+    print('.')
+    sleep(0.2)
+    print('.')
+    sleep(0.2)
+    print('.')
+    sleep(0.2)
+    x.formatTerm()
+    sys.exit()
 
 def imprimir(cadena, ancho):
     print('|' + cadena.center(ancho,' '), end='|\n')
@@ -13,7 +31,7 @@ def panel(lineas, ancho):
         else:
            imprimir(cadena, ancho)
 
-def info():
+def acercaDe():
     fecha = 'Noviembre 2022'
     uni = 'UNIVERSIDAD TECNOLÓGICA NACIONAL'
     regional = 'Facultad Regional Resistencia'
@@ -80,7 +98,6 @@ def esEntero(dato):
         return False
 
 def pedir(nom_dato):
-    x = Consola()
     while True:
         dato = input(f'{nom_dato}= ')
         if esEntero(dato):
@@ -95,7 +112,7 @@ def formatear(lista):
 
 
 def cargaManual():
-    x = Consola('Carga manual')
+    x.setTitulo('Carga manual')
     num = 0
     lista_procesos = list()
     while True:

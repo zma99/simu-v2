@@ -1,6 +1,9 @@
-import os
+from .terminal import Consola
 from time import sleep
 from os.path import exists
+
+
+x = Consola()
 
 def formatLista(lista_str):
     # Recibe una lista de strings y devuelve lista de listas
@@ -25,7 +28,7 @@ def formatInt(lista_lista):
             except ValueError:
                 print(f'\nERROR: No se pudo formatear los datos del archivo a valores int(). Revise el arhivo y corrija los errores.')
                 print(f'\nLínea con error: {lista} - Dato no válido: [ {elem} ] (debe ser número entero)\n')
-                os.system('pause')
+                x.esperar()
                 return 0
         resultado.append(aux)
 
@@ -67,7 +70,7 @@ def valido(lista):
         print('\n'+'#'*len(error))
         print(error)
         print('\n'+'#'*len(error))
-        os.system('pause')
+        x.esperar()
         return False
 
     return True
@@ -90,12 +93,12 @@ def cargar(ruta_archivo, modo=0):
                         input('\nPresione una tecla para continuar...')
                         return contenido
             elif modo == 1:
-                os.system('cls')
+                x.limpiar()
                 contenido = archivo.readline()
                 while contenido != '':
                     print(contenido)
                     if contenido.count('-') > 2:
-                        os.system('pause>nul')
+                        x.esperar('')
                     contenido = archivo.readline()
             else:
                 pass

@@ -43,6 +43,6 @@ MODO DE EJECUCIÓN:
 ---------------------------------------------------------------------------------
 ABORTAR:
 
-Si desea frenar la ejecución de forma forzado::
+Si desea frenar la ejecución de forma forzado:
 1. Presione la combinación de teclas 'Ctrl + C'
 2. Cierre la ventana de su terminal

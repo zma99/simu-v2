@@ -13,6 +13,11 @@ class Memoria(object):
     def particiones(self):
         return self.__particiones
 
+    def particionId(self, id):
+        for part in self.particiones():
+            if part.id() == id:
+                return part
+
 
     def crearParticiones(self, datos_part):
         # Recibe lista con valores enteros = tamaño de partición
@@ -63,6 +68,7 @@ class Memoria(object):
         for part in self.__particiones:
             if part.id() != 0 and not part.procAsignado() is None and proceso.id() == part.procAsignado().id():
                 part.liberar()
+                proceso.setpart(None)
 
 
 
@@ -94,8 +100,10 @@ class Particion(object):
         return self.__procAsignado
 
 
+
     def asignar(self, proceso):
         self.__procAsignado = proceso
+        proceso.setpart(self.id())
 
 
     def fragmentacion(self):

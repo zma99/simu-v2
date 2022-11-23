@@ -39,6 +39,7 @@ class Simulador(object):
         self.__pcp.liberar()
         self.__mmu.liberar(proceso)
         self.__plp.terminarProceso(proceso)
+        self.__pmp.ejecutar(self.admitidos())
         self.__terminados.append(proceso)
 
     def nuevos(self, cant=None):
@@ -64,9 +65,9 @@ class Simulador(object):
         print('-'*37)
         print(f'\n{titulo}')
         print('-'*37)
-        print(f'PID\tTA\tTI\tTAM\tEST')
+        print(f'PID\tTA\tTI\tTAM\tEST\tPART')
         for proceso in lista_procesos:    
-            print(f'{proceso.id()}\t{proceso.ta()}\t{proceso.ti()}\t{proceso.tam()}\t{proceso.estado()}')       
+            print(f'{proceso.id()}\t{proceso.ta()}\t{proceso.ti()}\t{proceso.tam()}\t{proceso.estado()}\t{proceso.partId()}')       
 
 
     def admitir(self):
@@ -87,19 +88,28 @@ class Simulador(object):
 
     def mainloop(self):
         # Ejecuta el bucle del programa principal
+        bandera = True
         x = self.consola()
         fin = self.__plp.tiTotal()+1  #  Bandera de fin de ejecución
         while self.__reloj != fin:
             x.limpiar()
             self.admitir()
-            if self.__reloj == 0:
+
+            if bandera and self.plp().getListos():
                 self.__pcp.dispatcher()
+                bandera = False
+                
+            
+
+
             if self.__pcp.cpu().reloj() == 0:
                 self.liberarRecursos()
                 self.admitir()
                 self.plp().setAdmitidos(self.pmp().ejecutar(self.admitidos()))
                 self.pcp().setProcListos(self.plp().getListos())
                 self.__pcp.dispatcher()
+
+                
             self.__pcp.ejectuar()
 
             print('-'*37)

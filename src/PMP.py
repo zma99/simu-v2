@@ -6,34 +6,34 @@ class MedioPlazo(object):
         return self.__mmu
 
     def swap(self, p, q):
+        # Intercambia el proceso q por
+        # el proceso p
         self.mmu().liberar(q)
         q.setestado('L/S')
         self.mmu().ubicar(p)
         p.setestado('L')
 
     def extraerLS(self, proc):
+        # Toma una lista de procesos admitidos y
+        # extrae aquellos con estado = L/S 
+        # retornandolos como una lista nueva
+        aux = proc[:]
         temp = list()
-        #print('proc = ',proc)
-
         for p in proc:
-           # print('En busca de los L/S: ',p)
             if p.estado() == 'L/S':
-                temp.append(proc.pop(proc.index(p)))
-                #print('\ntemp = ',temp)
+                temp.append(aux.pop(aux.index(p)))
         return temp
 
     def select(self, lista_procesos):
+        # Compara los proceos  L/S con los L
+        # Si los L/S tienen menor TI intercambia
+        # con el proceso estado=L
+        # sólo si cabe en la misma partición
         aux = lista_procesos[:]
-        #print('\naux=',aux)
         ls = self.extraerLS(aux)
-        #print('\nls=',ls)
-        #print('\naux=',aux)
-        
         for p in ls:
-            #print(p)
             for q in lista_procesos:
-                #print(q)
-                if p.ti() < q.ti():
+                if p.ti() < q.ti() and self.mmu().cabe(p,q):
                     self.swap(p, q)
                     lista_procesos[lista_procesos.index(p)].setestado(p.estado())
                     break
@@ -41,6 +41,5 @@ class MedioPlazo(object):
         return lista_procesos
 
     def ejecutar(self, lista_procesos):
-        print('\nPLANIFICADOR MEDIANO PLAZO')
         return self.select(lista_procesos)
 

@@ -5,6 +5,7 @@ class Proceso(object):
         self.__ti = None
         self.__tam = None
         self.__estado = 'N'  # estado = N/L/LS/E/T
+        self.__partId = None
 
     def __repr__(self):
         return f'\n[ID={self.__id}, \tTA={self.__ta}, \tTI={self.__ti}, \tTAM={self.__tam} KB, \tEST={self.__estado}]'
@@ -23,6 +24,9 @@ class Proceso(object):
 
     def estado(self):
         return self.__estado
+    
+    def partId(self):
+        return self.__partId
 
 
     def setid(self, id):
@@ -40,3 +44,5 @@ class Proceso(object):
     def setestado(self, estado):
         self.__estado = estado
 
+    def setpart(self, id):
+        self.__partId = id

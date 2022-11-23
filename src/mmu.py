@@ -1,3 +1,4 @@
+import os
 from .memoria import *
 
 class MMU(object):
@@ -48,3 +49,9 @@ class MMU(object):
     def liberar(self, proceso):
         # Invoca método para liberar proceso de memoria
         self.__memoria.liberar(proceso)
+
+    def cabe(self, p, q):
+        if q.partId() is None:
+            return False
+        particion = self.memoria().particionId(q.partId())
+        return p.tam() <= particion.tam()

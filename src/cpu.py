@@ -15,8 +15,9 @@ class CPU(object):
         self.__reloj = proceso.ti()
 
     def ejecutar(self):
-        self.__reloj -= 1
+        if not self.reloj() is None:
+            self.__reloj -= 1
 
     def liberar(self):
         self.__procAsignado = None
-        self.__reloj = 0
+        self.__reloj = None

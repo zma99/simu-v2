@@ -2,15 +2,11 @@ from sys import platform
 from os import system
 
 class Consola(object):
-    def __init__(self, titulo='', nueva_ventan=False):
+    def __init__(self, titulo=''):
         if platform == 'win32':
             if titulo != '':
                 system(f'TITLE {titulo}')
-            if nueva_ventan:
-                system('START')
-            
-        elif platform == 'linux':
-            pass
+        #elif platform == 'linux':
         else:
             pass
 
@@ -39,9 +35,14 @@ class Consola(object):
                 system(f'MODE con:cols={columnas}')
             elif lineas:
                 system(f'MODE con:lines={lineas}')
-
-                
         elif platform == 'linux':
-            system('printf "\033[8;10;42t"')
+            if not (columnas or lineas):
+                system(f'printf "\033[8;25;100t"')
+            elif columnas and lineas:
+                system(f'printf "\033[8;{lineas};{columnas}t"')
+            elif columnas:
+                system(f'printf "\033[8;25;{columnas}t"')
+            elif lineas:
+                system(f'printf "\033[8;{lineas};100t"')
         else:
             pass

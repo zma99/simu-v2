@@ -6,7 +6,7 @@ INFORMACION:
 
 El programa simula la asignacion de memoria por criterio worst-fit
 y planificacion de procesos mediante el algoritmo SJF que prioriza el menor 
-tiempo de irrupcion
+tiempo de irrupcion.
 ---------------------------------------------------------------------------------
 ESTRUCTURA:
 
@@ -18,16 +18,19 @@ gestion de archivo, etc.
 ---------------------------------------------------------------------------------
 FORMATO ARCHIVO:
 
+El archivo 'datos.txt' debe cumplir la siguientes caracteristicas...
+
 - Cada linea representa un proceso.
+- Maximo de lineas permitidas: 10
 - En cada linea se indica: [ta,ti,tam]
-    donde:
-        ta = tiempo de arribo
-        ti = tiempo de irrupcion
-        tam = tamaño del proceso
-    todos valores tipo entero.
+donde:
+    ta = tiempo de arribo
+    ti = tiempo de irrupcion
+    tam = tamaño del proceso
+todos valores tipo entero.
 - El programa realiza una validacion en caso que existan datos incoherentes
 ---------------------------------------------------------------------------------
-MODO DE EJECUCIoN:
+MODO DE EJECUCION:
 
 1) Ejecutar el archivo 'main.py'
 2) El programa inicia una interfaz interactiva para el usuario con un menu principal.

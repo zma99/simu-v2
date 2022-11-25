@@ -3,6 +3,10 @@ from time import sleep
 from .terminal import Consola
 from .gestorArchivos import formatInt
 
+# Controla el límite de procesos para cargar
+LIMITE_PROC = 10
+
+# Instancia global de la terminal
 x = Consola()
 
 
@@ -32,6 +36,7 @@ def panel(lineas, ancho):
            imprimir(cadena, ancho)
 
 def acercaDe():
+    # Muestra un cuadro con información
     fecha = 'Noviembre 2022'
     uni = 'UNIVERSIDAD TECNOLÓGICA NACIONAL'
     regional = 'Facultad Regional Resistencia'
@@ -90,6 +95,7 @@ def mostrar(titulo, lista_procesos):
             print(f'{num}\t{proceso[0]}\t{proceso[1]}\t{proceso[2]}')
 
 def esEntero(dato):
+    # Valida que un dato sea tipo int()
     try:
         int(dato)
         return True
@@ -98,13 +104,16 @@ def esEntero(dato):
         return False
 
 def pedir(nom_dato):
+    # Pide por pantalla ingresar un dato
+    # nom_dato es tipo str() se muestra por pantalla
+    
     while True:
         dato = input(f'{nom_dato}= ')
         if esEntero(dato):
             break
         x.esperar('')
         
-    return dato
+    return abs(int(dato))
 
 
 def formatear(lista):
@@ -122,17 +131,24 @@ def cargaManual():
     while True:
         x.limpiar()
         num += 1
-        print('\nIngrese datos del proceso.\n')
+        print(f'\nIngrese datos del proceso (máximo {LIMITE_PROC}).\n')
         print('Procesos cargados [TA,TI,TAM]: ', lista_procesos)
         print('-'*40)
         print(f'\nProceso Nro:{num}')
         ta = pedir('TA')
         ti = pedir('TI')
-        tam = pedir('TAM(KB)')
+        while True:
+            tam = pedir('TAM(KB)')
+            if tam <= 250:
+                break
+            print('El tamaño debe ser menor o igual a 250KB')
+
         proceso = [ta,ti,tam]
         lista_procesos.append(proceso)
         print('-'*40)
-        seguir = input('\n¿Seguir? [ENTER=Sí / Cualquiera=No]\n> ')
+        if len(lista_procesos) == LIMITE_PROC:
+            break
+        seguir = input('\n¿Seguir? [ENTER=Sí / Otra tecla=No]\n> ')
         if seguir != '':
             break
 

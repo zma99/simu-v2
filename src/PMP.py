@@ -24,20 +24,7 @@ class MedioPlazo(object):
                 temp.append(aux.pop(aux.index(p)))
         return temp
 
-    def select(self, lista_procesos):
-        # Compara los proceos  L/S con los L
-        # Si los L/S tienen menor TI intercambia
-        # con el proceso estado=L
-        # sólo si cabe en la misma partición
-        aux = lista_procesos[:]
-        ls = self.extraer(aux, 'L/S')
-        for p in ls:
-            for q in lista_procesos:
-                if q.estado() != 'E' and self.mmu().cabe(p,q) and p.ti() < q.ti():
-                    self.swap(p, q)
-                    lista_procesos[lista_procesos.index(p)].setestado(p.estado())
-                    break
-
+    def priemerVerificacion(self, lista_procesos):
         aux = lista_procesos[:]
         ls = self.extraer(aux, 'L/S')
         for p in ls:
@@ -45,8 +32,19 @@ class MedioPlazo(object):
                 if len(self.extraer(aux, 'L')) < 3 and q.estado() != 'E' and self.mmu().cabe(p,q):
                     self.swap(p, q)
                     lista_procesos[lista_procesos.index(p)].setestado(p.estado())
-                    break  
+                    break 
     
+    def segundaVerificacion(self, lista_procesos):
+        aux = lista_procesos[:]
+        ls = self.extraer(aux, 'L/S')
+        for p in ls:
+            for q in lista_procesos:
+                if q.estado() != 'E' and self.mmu().cabe(p,q) and p.ti() < q.ti():
+                    self.swap(p, q)
+                    lista_procesos[lista_procesos.index(p)].setestado(p.estado())
+                    break           
+
+    def tercerVerificacion(self, lista_procesos):
         aux = lista_procesos[:]
         ls = self.extraer(aux, 'L/S')
         for p in ls:
@@ -54,8 +52,17 @@ class MedioPlazo(object):
                 self.mmu().ubicar(p)
                 lista_procesos[lista_procesos.index(p)].setestado('L')
 
-        return lista_procesos
+
+    def select(self, lista_procesos):
+        # Compara los proceos  L/S con los L
+        # Si los L/S tienen menor TI intercambia
+        # con el proceso estado=L
+        # sólo si cabe en la misma partición
+        self.priemerVerificacion(lista_procesos)
+        self.segundaVerificacion(lista_procesos)
+        self.tercerVerificacion(lista_procesos)
+        #return lista_procesos
 
     def ejecutar(self, lista_procesos):
-        return self.select(lista_procesos)
+        self.select(lista_procesos)
 

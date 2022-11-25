@@ -2,7 +2,10 @@ from .terminal import Consola
 from time import sleep
 from os.path import exists
 
+# Controla el límite de procesos para cargar
+LIMITE_PROC = 10
 
+# Instancia global de la terminal
 x = Consola()
 
 def formatLista(lista_str):
@@ -24,7 +27,11 @@ def formatInt(lista_lista):
         aux = list()
         for elem in lista:
             try:
-                aux.append(int(elem))
+                #if lista.index(elem) == 0 and int(elem) >= 0:
+                aux.append(abs(int(elem)))
+                #elif int(elem) >= 1:
+                #    aux.append(int(elem))
+                #print(aux)
             except ValueError:
                 print(f'\nERROR: No se pudo formatear los datos del archivo a valores int(). Revise el arhivo y corrija los errores.')
                 print(f'\nLínea con error: {lista} - Dato no válido: [ {elem} ] (debe ser número entero)\n')
@@ -35,6 +42,7 @@ def formatInt(lista_lista):
     return resultado
 
 def validar(lista):
+    # Limpia blancos y datos con formato no válido
     print('\nValidando contenido...')
     print('Limpiando líneas vacías...')
     sleep(0.5)
@@ -52,6 +60,12 @@ def validar(lista):
 
 
 def formatear(lista_str):
+    # Recibe lista de string listas de string: 
+    # ['['ta', 'ti', 'tam'], ['ta', 'ti', 'tam'],..., ['ta', 'ti', 'tam']']
+    # da formato y devuelve lista de listas de enteros:
+    # [[ta, ti, tam], [ta, ti, tam],..., [ta, ti, tam]]
+    # donde ta, ti y tam son tipo int()
+
     lista_str = validar(lista_str)
     print('Dando formato...')
     sleep(0.5)
@@ -60,6 +74,7 @@ def formatear(lista_str):
     return resultado
 
 def valido(lista):
+    # Controla tamaño del proceso
     errores = 0
     for elem in lista:
         if elem[2] > 250:
@@ -76,6 +91,9 @@ def valido(lista):
     return True
 
 def cargar(ruta_archivo, modo=0):
+    # Permite cargar un archivo .txt
+    # modo=0 para archivo de proceos
+    # modo=1 para archivo readme
     x.limpiar()
     if exists(ruta_archivo):
         print('\nLeyendo archivo...')
@@ -90,9 +108,15 @@ def cargar(ruta_archivo, modo=0):
                     print(contenido)
                     if contenido != 0 and valido(contenido):
                         sleep(0.5)
-                        print('\nListo!')
-                        input('\nPresione una tecla para continuar...')
-                        return contenido
+                        if len(contenido) > LIMITE_PROC:
+                            x.limpiar()
+                            print(f'\nSólo se permite cargar un máximo de {LIMITE_PROC} procesos.')
+                            x.esperar()
+                            return []
+                        else:
+                            print('\nListo!')
+                            input('\nPresione una tecla para continuar...')
+                            return contenido
             elif modo == 1:
                 x.limpiar()
                 contenido = archivo.readline()

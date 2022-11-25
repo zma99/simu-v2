@@ -25,6 +25,7 @@ class LargoPlazo(object):
         return len(self.__nuevosProc) > 0
 
     def crearProceso(self, datos):
+        # Devuelve instancia de Proceso()
         p = Proceso()
         p.setid(len(self.__nuevosProc) + 1)
         p.setta(datos[0])

@@ -1,5 +1,3 @@
-import os, sys
-from time import sleep
 from .interfaz import Consola
 from .mmu import MMU
 from .PLP import LargoPlazo
@@ -49,7 +47,7 @@ class Simulador(object):
         if cant is None:
             return self.__plp.nuevos()
         else:
-            return self.__plp.nuevos()[0:3]
+            return self.__plp.nuevos()
 
 
     def admitidos(self):
@@ -61,7 +59,30 @@ class Simulador(object):
     def consola(self):
         return self.__consola
 
-    def mostrar(self, titulo, lista_procesos):
+    def mostrar(self):
+        # Muestra información para el usuario
+
+
+        # Se muestra encabezados: Reloj y Proceso en ejecición
+        print(' ' + '-'*42)
+        print(f' Reloj = {self.reloj()}\t', end='')
+        if not self.pcp().cpu().procAsignado() is None:
+            print(f'\tEjecutando: PID={self.pcp().cpu().procAsignado().id()}')
+        else:
+            print(f'\tEjecutando: PID=[]')
+        print(' ' + '-'*42 + '\n')
+
+        # Muestra la distribución de particiones
+        # procesos asignados y fragmentación
+        self.mmu().distribucion()
+
+        # Se muestra en pantalla los estados de colas
+        self.mostrarCola(' Cola de admitidos', self.admitidos())
+        self.mostrarCola(' Cola de nuevos', self.nuevos(10))
+        self.mostrarCola(' Procesos terminados', self.terminados())
+
+        
+    def mostrarCola(self, titulo, lista_procesos):
         # Muestra una tabla con título personalizado
         # encabezados PID, TA, TI, TAM, EST
         # en mismo orden los atributos de cada proceso
@@ -82,11 +103,13 @@ class Simulador(object):
         
 
     def iniciarConsola(self):
+        # Instancia un objeto para controlar la terminal
         titulo = 'SIMULADOR'
         self.__consola = Consola(titulo)
         self.__consola.formatTerm(44,45)
 
     def nofin(self):
+        # Valida condición de fin para mainloop
         return self.nuevos() or self.admitidos()
         
     def iniciar(self):
@@ -101,42 +124,26 @@ class Simulador(object):
         x = self.consola()
         while self.nofin():
             x.limpiar()
-            
             self.admitir()
 
+            # Para primer vuelta y cuando arriban tarde los procesos
             if bandera and self.plp().getListos():
                 self.pcp().dispatcher()
                 bandera = False
 
-
+            # Termina ejecición de un proceso
             if self.pcp().cpu().reloj() == 0:
                 self.liberarRecursos()
                 self.admitir()
                 self.pcp().dispatcher()
 
+            # Si cola de listos no está vacía setea en True
+            # sirve para el primer if
             if not self.plp().getListos():
                 bandera = True
             
             # Ejecución
-            self.pcp().ejectuar()   
-
-            print(' ' + '-'*42)
-            print(f' Reloj = {self.reloj()}\t', end='')
-            if not self.pcp().cpu().procAsignado() is None:
-                print(f'\tEjecutando: PID={self.pcp().cpu().procAsignado().id()}')
-            else:
-                print(f'\tEjecutando: PID=[]')
-            print(' ' + '-'*42 + '\n')
-
-            # Muestra la distribución de particiones
-            # procesos asignados y fragmentación
-            self.mmu().distribucion()
-
-            # Se muestra en pantalla los estados
-            self.mostrar(' Monitor de procesos', self.admitidos())
-            self.mostrar(' Procesos pendientes (3 primeros en cola)', self.nuevos(10))
-            self.mostrar(' Procesos terminados', self.terminados())
-            
-            
+            self.pcp().ejectuar()  
+            self.mostrar()
             self.incrementar()   # Incrementa el reloj
             x.esperar()

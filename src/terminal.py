@@ -3,10 +3,10 @@ from os import system
 
 class Consola(object):
     def __init__(self, titulo=''):
+        # titulo sólo funciona para windows
         if platform == 'win32':
             if titulo != '':
                 system(f'TITLE {titulo}')
-        #elif platform == 'linux':
         else:
             pass
 
@@ -17,6 +17,7 @@ class Consola(object):
             pass
 
     def limpiar(self):
+        # Limpia la terminal
         if platform == 'win32':
             system('cls')
         elif platform == 'linux':
@@ -25,27 +26,16 @@ class Consola(object):
             pass
 
     def esperar(self, mensaje='\n Presione una tecla para continuar...'):
+        # A modo general utiliza la función input()
+        # para simular la detención de la terminal
         input(mensaje)
 
-    def formatTerm(self, columnas=False, lineas=False):
+    def formatTerm(self, columnas=100, lineas=25):
         # Cambia el tamaño de la ventana de la terminal en uso
+        # según plataforma
         if platform == 'win32':
-            if not (columnas or lineas):
-                system('MODE con:cols=100 lines=25')
-            elif columnas and lineas:
-                system(f'MODE con:cols={columnas} lines={lineas}')
-            elif columnas:
-                system(f'MODE con:cols={columnas}')
-            elif lineas:
-                system(f'MODE con:lines={lineas}')
+            system(f'MODE con:cols={columnas} lines={lineas}')
         elif platform == 'linux':
-            if not (columnas or lineas):
-                system(f'printf "\033[8;25;100t"')
-            elif columnas and lineas:
-                system(f'printf "\033[8;{lineas};{columnas}t"')
-            elif columnas:
-                system(f'printf "\033[8;25;{columnas}t"')
-            elif lineas:
-                system(f'printf "\033[8;{lineas};100t"')
+            system(f'printf "\033[8;{lineas};{columnas}t"')
         else:
             pass

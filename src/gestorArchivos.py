@@ -1,6 +1,8 @@
+import os
 from .terminal import Consola
 from time import sleep
 from os.path import exists
+
 
 # Controla el límite de procesos para cargar
 LIMITE_PROC = 10
@@ -124,9 +126,18 @@ def cargar(ruta_archivo, modo=0):
                     print(contenido)
                     if contenido.count('-') > 2:
                         x.esperar('')
+                        x.limpiar()
                     contenido = archivo.readline()
             else:
                 pass
     else:
         print('NO SE ENCUENTRA EL ARHCIVO ESPECIFICADO')
         x.esperar()
+
+
+
+def findfile(name, path):
+    for dirpath, dirname, filename in os.walk(path):
+        if name in filename:
+            return os.path.join(dirpath, name)
+

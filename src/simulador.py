@@ -89,7 +89,7 @@ class Simulador(object):
         print(' ' + '-'*42)
         print(f'\n{titulo}')
         print(' ' + '-'*42)
-        print(f' PID\tTA\tTI\tTAM\tEST')
+        print(f' PID\tTA\tTI\tTAM(KB)\tEST')
         for proceso in lista_procesos:    
             print(f' {proceso.id()}\t{proceso.ta()}\t{proceso.ti()}\t{proceso.tam()}\t{proceso.estado()}')       
 

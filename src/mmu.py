@@ -22,7 +22,7 @@ class MMU(object):
         titulo = ' Distribución de particiones'
         print(titulo)
         print(' ' + '-'*len(titulo)+'-'*14)
-        print(' ID\tDir\tTam\tPID\tFrag')
+        print(' ID\tDir\tTam(KB)\tPID\tFrag')
         for part in self.particiones():
             if part.procAsignado() is None:
                 procAsignado = '-'

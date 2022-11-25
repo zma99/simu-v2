@@ -110,10 +110,20 @@ def pedir(nom_dato):
     while True:
         dato = input(f'{nom_dato}= ')
         if esEntero(dato):
-            break
+            dato = int(dato)
+            if nom_dato == 'TA' and dato < 0:
+                print('TA debe ser mayor o igual a cero')
+            elif nom_dato == 'TI' and dato < 1:
+                print('TI debe ser mayor o igual a uno')
+            elif nom_dato == 'TAM(KB)' and (dato < 1 or dato > 250):
+                print('El tamaño mínimo es 1 KB y el máximo es 250 KB')
+            else:
+                break
+        if dato == 'CANCELAR' or dato == 'C':
+            return -1
         x.esperar('')
         
-    return abs(int(dato))
+    return dato
 
 
 def formatear(lista):
@@ -131,18 +141,19 @@ def cargaManual():
     while True:
         x.limpiar()
         num += 1
-        print(f'\nIngrese datos del proceso (máximo {LIMITE_PROC}).\n')
+        print(f'\nIngrese datos del proceso (máximo {LIMITE_PROC}). | "CANCELAR" o "C" (mayúsculas sin comillas) para abortar.\n')
         print('Procesos cargados [TA,TI,TAM]: ', lista_procesos)
         print('-'*40)
         print(f'\nProceso Nro:{num}')
         ta = pedir('TA')
+        if ta == -1:
+            break
         ti = pedir('TI')
-        while True:
-            tam = pedir('TAM(KB)')
-            if tam <= 250:
-                break
-            print('El tamaño debe ser menor o igual a 250KB')
-
+        if ti == -1:
+            break
+        tam = pedir('TAM(KB)')
+        if tam == -1:
+            break
         proceso = [ta,ti,tam]
         lista_procesos.append(proceso)
         print('-'*40)
@@ -150,14 +161,15 @@ def cargaManual():
             break
         seguir = input('\n¿Seguir? [ENTER=Sí / Otra tecla=No]\n> ')
         if seguir != '':
+            x.limpiar()
+            mostrar('Procesos cargados', lista_procesos)
+            x.esperar()
+            lista_procesos = formatear(lista_procesos)
+            return lista_procesos
             break
 
-    x.limpiar()
-    mostrar('Procesos cargados', lista_procesos)
-    x.esperar()
-
-    lista_procesos = formatear(lista_procesos)
-
-    return lista_procesos
+    
+    return []
+    
 
 
